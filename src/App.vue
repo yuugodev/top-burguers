@@ -1,38 +1,40 @@
 <template>
   <div id="app" class="flex">
-    <nav class="main-nav">
+    <nav v-if="isMobile()" class="main-nav">
      <div class="logo">
        my.company
      </div>
-     <Burger v-if="isMobile()"></Burger>
+     <Burger></Burger>
    </nav>
     <Sidebar>
       <ul class="sidebar-panel-nav">
-        <li><a href="#home">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><router-link to="/">Home</router-link></li>
+        <li><router-link to="/menu">Cardápio</router-link></li>
+        <li><router-link to="/about">Sobre</router-link></li>
+        <li><router-link to="/contact">Contato</router-link></li>
       </ul>
    </Sidebar>
-   <Home class="main-content" :class="{'space': isMobile}"/>
+   <div>
+     <router-view class="main-content" :class="{'space': space}"></router-view>
+   </div>
+   
   </div>
 </template>
 
 <script>
   import Burger from './components/Sidebar/Burguer.vue';
   import Sidebar from './components/Sidebar/Sidebar.vue';
-  import Home from './components/Home.vue'
   import { store } from '@/store.js'
 
 export default {
  name: 'app',
  components: {
    Burger,
-   Sidebar,
-   Home
+   Sidebar
  },
  data() {
    return {
-
+     space: false
    }
 
  },
@@ -44,6 +46,7 @@ export default {
         return true
       } else {
         console.log("desktop")
+        this.space = true;
         store.isNavOpen = true;
         return false
       }
@@ -92,12 +95,14 @@ html {
  }
 
  .main-content {
-   width: 100%;
    background-color: red;
+   
  }
 
  .space {
+   margin: 10px;
    margin-left: 300px;
+   width: 50%;
    
  }
 </style>
